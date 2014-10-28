@@ -1,0 +1,3 @@
+# Jackal Mail
+
+Mailer handler

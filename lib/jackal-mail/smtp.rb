@@ -61,13 +61,18 @@ module Jackal
           if(bcc = config.get(:bcc))
             args[:bcc] = bcc
           end
-          result = Pony.mail(args)
+          result = send_mail(args)
           payload.set(:data, :mail, :result, result)
           debug "Pony delivery result: #{result.inspect}"
         rescue => e
           error "Delivery failed: #{e.class} - #{e}"
           debug "#{e.class}: #{e}\n#{e.backtrace.join("\n")}"
         end
+      end
+
+      # So we can stub out mail sending for tests...
+      def send_mail(args)
+        Pony.mail(args)
       end
 
     end

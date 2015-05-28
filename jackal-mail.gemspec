@@ -12,5 +12,7 @@ Gem::Specification.new do |s|
   s.require_path = 'lib'
   s.add_dependency 'jackal'
   s.add_dependency 'pony'
+  s.add_development_dependency 'carnivore-actor'
+
   s.files = Dir['**/*']
 end

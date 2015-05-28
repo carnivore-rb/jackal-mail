@@ -1,22 +1,5 @@
 require 'jackal-mail'
 
-=begin
-      # In payload: notification_email
-      {
-        :destination => {
-          :email => '',
-          :name => ''
-        },
-        :origin => {
-          :email => '',
-          :name => ''
-        },
-        :subject => '',
-        :message => '',
-        :html => true/false
-      }
-=end
-
 module Jackal
   # Mailer component
   module Mail

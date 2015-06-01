@@ -27,6 +27,7 @@ module Jackal
       def execute(message)
         failure_wrap(message) do |payload|
           deliver(payload)
+          payload[:data][:mail].delete(:result)
           job_completed(:mail, payload, message)
         end
       end
@@ -61,7 +62,7 @@ module Jackal
           if(bcc = config.get(:bcc))
             args[:bcc] = bcc
           end
-          result = send_mail(args)
+          result = send_mail(payload, args)
           payload.set(:data, :mail, :result, result)
           debug "Pony delivery result: #{result.inspect}"
         rescue => e
@@ -71,7 +72,7 @@ module Jackal
       end
 
       # So we can stub out mail sending for tests...
-      def send_mail(args)
+      def send_mail(payload, args)
         Pony.mail(args)
       end
 

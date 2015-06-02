@@ -7,8 +7,8 @@ SUBJECT  = 'test'
 BODY     = 'foo'
 
 class Jackal::Mail::Smtp
-  def send_mail(args)
-    $args = args
+  def send_mail(payload, args)
+    payload.set(:smtp_args, args)
     h = { :from => args[:from], :to => args[:to], :subject => args[:subject] }
     Mail::Message.new(h)
   end
@@ -18,6 +18,7 @@ describe Jackal::Mail::Smtp do
 
   before do
     @runner = run_setup(:test)
+    track_execution(Jackal::Mail::Smtp)
   end
 
   after do
@@ -28,13 +29,13 @@ describe Jackal::Mail::Smtp do
 
   describe 'execute' do
     it 'passes correct data/format to slack-notifier' do
-      notification.transmit(mail_payload)
-      source_wait { !MessageStore.messages.empty? }
-      result = MessageStore.messages.first
+      result = transmit_and_wait(notification, mail_payload)
+      callback_executed?(result).must_equal true
+      # ensure payload result was cleared to allow for multiple runs
+      result.get(:data, :mail, :result).must_be_nil
 
-      (!!result).must_equal true
       arr = [[:to, [DST_ADDR]], [:from, SRC_ADDR], [:subject, SUBJECT], [:body, BODY]]
-      arr.each { |key, value| $args[key].must_equal value }
+      arr.each { |key, value| result[:smtp_args][key].must_equal value }
     end
   end
 

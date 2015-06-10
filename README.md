@@ -6,26 +6,35 @@ Simple handler for sending email
 Optional configuration
 
 ```json
-{ "jackal": {
+{
+  "jackal": {
     "config": {
-        "mail": {
-            "bcc": "",
-            "via_options": { ... } }}}}
+      "mail": {
+        "bcc": "",
+        "via_options": {
+          ...
+        }
+      }
+    }
+  }
+}
 ```
 See https://github.com/benprew/pony#transport for "via_options"
 
 ## Payload structure
 
 ```ruby
-{ :destination => {
+{
+  :destination => {
     :email => '',
-    :name => '' },
-
+    :name => ''
+  },
   :origin => {
     :email => '',
-    :name => '' },
-
+    :name => ''
+  },
   :subject => '',
   :message => '',
-  :html => true/false }
+  :html => true/false
+}
 ```

@@ -28,6 +28,12 @@ describe Jackal::Mail::Smtp do
   let(:notification) { Carnivore::Supervisor.supervisor[:jackal_mail_input] }
 
   describe 'execute' do
+    it 'fails to execute if missing expected payload data' do
+      payload = Jackal::Utils.new_payload(:test, {})
+      result = transmit_and_wait(notification, payload)
+      callback_executed?(result).must_equal false
+    end
+
     it 'passes correct data/format to slack-notifier' do
       result = transmit_and_wait(notification, mail_payload)
       callback_executed?(result).must_equal true

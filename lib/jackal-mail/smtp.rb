@@ -28,6 +28,7 @@ module Jackal
         failure_wrap(message) do |payload|
           deliver(payload)
           payload[:data][:mail].delete(:result)
+          payload[:data].delete(:notification_email)
           job_completed(:mail, payload, message)
         end
       end
